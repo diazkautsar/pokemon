@@ -19,6 +19,7 @@
     "jsx": "preserve",
     "paths": {
       "pages/*": ["./pages/*"],
+      "components/*": ["./components/*"]
     }
   },
   "include": [
