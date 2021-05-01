@@ -30,7 +30,7 @@ interface Props {
 
 const Button = styled('div')`
   padding: 10px;
-  box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
+  box-shadow: rgb(49 53 59 / 12%) 0px 1px 25px 6px;
   background-color: white;
   border-radius: 5px;
   cursor: pointer;
@@ -44,6 +44,7 @@ const HomePage: FunctionComponent<Props> = ({ loadMorePokemon, pokemons, isAllPo
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        marginTop: '8rem'
       }}>
         { pokemons.map((item, index) => {
           return (
