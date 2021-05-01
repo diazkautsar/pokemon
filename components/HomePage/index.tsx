@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { FunctionComponent, useState } from 'react'
-import { useRouter } from 'next/router'
-import { usePokemonContext } from '../../context/index'
+import { FunctionComponent, MouseEvent } from 'react'
+import PokemonCard from '../PokemonCard'
+import styled from '@emotion/styled'
 
 type pokemonTypes = {
   __typename?: string,
@@ -21,38 +21,63 @@ type resultsTypes = {
 }
 
 interface Props {
-  pokemons: pokemonTypes
+  pokemons: resultsTypes[]
+  loadMorePokemon?: (event: MouseEvent) => void,
+  seeAllPokemon?: (event: MouseEvent) => void,
+  isAllPokemon?: boolean,
 }
 
 
-const HomePage: FunctionComponent<Props> = ({ ...pageProps }) => {
-  const { changeImageDetailUrl } = usePokemonContext()
-  const router = useRouter()
-  const [pokemons, setPokemons] = useState(pageProps.pokemons)
+const Button = styled('div')`
+  padding: 10px;
+  box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+`
 
-  const changePage = (name: string, url: string) => {
-    changeImageDetailUrl(url)
-    router.push(`/pokemon/${name}`)
-  }
 
+const HomePage: FunctionComponent<Props> = ({ loadMorePokemon, pokemons, isAllPokemon, seeAllPokemon }) => {
   return (
-    <div css={{
-      color: "red",
-      display: "flex",
-      flexWrap: 'wrap',
-      margin: 'auto',
-      alignContent: 'center',
-      alignItems: 'center',
-    }}>
-      { pokemons.results.map((item, index) => {
-        return (
-          <div onClick={() => changePage(item.name, item.image)} key={index}>
-            <img css={{ width: '125px', height: 'auto' }} src={item.image} alt={item.name} />
-            <div css={{ textAlign: 'center' }}> { item.name } </div>
+    <>
+      <div css={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+      }}>
+        { pokemons.map((item, index) => {
+          return (
+            <PokemonCard key={index} name={item.name} image={item.image} />
+          )
+        })}
+      </div>
+      { !isAllPokemon && (
+        <div css={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          margin: '10px',
+        }}
+        >
+          <div
+            onClick={(e) => loadMorePokemon(e)}
+            css={{
+              margin: '5px 10px',
+            }}
+          >
+            <Button> Load More Pokemon </Button>
           </div>
-        )
-      })}
-    </div>
+          <div
+            css={{
+              margin: '5px 10px'
+            }}
+            onClick={(e) => seeAllPokemon(e)}
+          >
+            <Button> See All Pokemon </Button>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
