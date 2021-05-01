@@ -27,7 +27,7 @@ const PokemonCard: React.FunctionComponent<Props> = ({ name, image }) => {
     <div
       onClick={() => changePage(name, image)}
       css={{
-        boxShadow: 'rgb(49 53 59 / 12%) 0px 1px 6px 0px',
+        boxShadow: 'rgb(49 53 59 / 12%) 0px 1px 25px 6px',
         backgroundColor: 'rgb(255, 255, 255)',
         margin: '20px',
         padding: '5px',
