@@ -24,6 +24,7 @@ export function PokemonProvider({ children }: Props) {
   const [imageDetailUrl, setImageDetailUrl] = useState('')
 
   const changeImageDetailUrl = (url: string) => {
+    localStorage.setItem('imageDetailUrl', url)
     setImageDetailUrl(url)
   }
 
