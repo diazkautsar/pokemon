@@ -1,5 +1,5 @@
+/** @jsxImportSource @emotion/react */
 import React, { useState, MouseEvent } from 'react'
-import Head from 'next/head'
 import HomePage from '../components/HomePage'
 import { GetServerSideProps } from 'next'
 import { initializeApollo } from '../libs/apollo'
@@ -87,10 +87,6 @@ function Home({ ...pageProps }) {
 
   return (
     <React.Fragment>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <HomePage
         pokemons={pokemons}
         loadMorePokemon={loadMorePokemon}
