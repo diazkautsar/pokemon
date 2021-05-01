@@ -5,6 +5,7 @@ import { initializeApollo } from '../../libs/apollo'
 import { GET_DETAIL_POKEMONS } from '../../utils/graphql/queries'
 import { usePokemonContext } from '../../context/index'
 import Tag from '../../components/Tag'
+import Gatcha from '../../components/Gatcha'
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   return {
@@ -27,12 +28,7 @@ export const getStaticProps: GetStaticProps = async context => {
       query: GET_DETAIL_POKEMONS,
       variables,
     })
-
-    // console.log(data, 'ini static props')
-    // value.push(data.pokemon)
     value = data.pokemon
-    
-    // console.log(value)
   
     return {
       props: {
@@ -92,12 +88,17 @@ const PokemonDetail: FunctionComponent<Props> = ({ pokemon, name }) => {
   const [moves] = useState(pokemon.moves)
   const [types] = useState(pokemon.types)
   const [srcImage, setSrcImage] = useState<string>(null)
+  const [isGatcha, setIsGatcha] = useState<boolean>(false)
 
   React.useEffect(() => {
     if (!imageDetailUrl) {
       setSrcImage(localStorage.getItem('imageDetailUrl'))
     }
   }, [])
+
+  const gatchaPokemon = () => {
+    setIsGatcha(true)
+  }
 
   return (
     <React.Fragment>
@@ -111,13 +112,14 @@ const PokemonDetail: FunctionComponent<Props> = ({ pokemon, name }) => {
       }}>
         <div
           css={{
-            boxShadow: 'rgb(49 53 59 / 12%) 0px 1px 6px 0px',
+            boxShadow: 'rgb(49 53 59 / 12%) 0px 1px 25px 6px',
             backgroundColor: 'rgb(255, 255, 255)',
             padding: '25px',
             borderRadius: '5px',
             width: '75%',
             [mq[1]]: {
-              width: '100%'
+              width: '100%',
+              minHeight: '100vh'
             },
           }}
         >
@@ -135,66 +137,72 @@ const PokemonDetail: FunctionComponent<Props> = ({ pokemon, name }) => {
             <div>
               <div> <img src={imageDetailUrl ? imageDetailUrl : srcImage} css={{ width: '300px', height: 'auto' }} /> </div>
               <div css={{ margin: '5px 0', fontSize: '2.5rem' }}> { name.toUpperCase() } </div>
-              <div css={{ display: 'flex', justifyContent: 'center' }}>
-                {types.map((item, index) => {
-                  return (
-                    <div key={index} css={{ margin: '.1rem' }} > <Tag types={'type'} name={item.type.name} /> </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div>
-              <div className="abilities">
-                <div
-                  css={{
-                    marginBottom: '.7rem',
-                    textAlign: 'left',
-                    fontSize: '1rem',
-                    borderBottom: '1px dashed black'
-                  }}>
-                  ABILITIES
-                </div>
-                <div
-                  css={{
-                    display: 'flex',
-                    justifyContent: 'start',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  {abilities.map((item, index) => {
+              { !isGatcha && (
+                <div css={{ display: 'flex', justifyContent: 'center' }}>
+                  {types.map((item, index) => {
                     return (
-                      <div key={index} css={{ marginBottom: '5px' }} > <Tag types={'abilities'} name={item.ability.name} /> </div>
+                      <div key={index} css={{ margin: '.1rem' }} > <Tag types={'type'} name={item.type.name} /> </div>
                     )
                   })}
                 </div>
-              </div>
-
-              <div className="moves" css={{ marginTop: '1rem' }}>
-                <div
-                  css={{
-                    marginBottom: '.7rem',
-                    textAlign: 'left',
-                    fontSize: '1rem',
-                    borderBottom: '1px dashed black'
-                  }}>
-                  MOVES
-                </div>
-                <div
-                  css={{
-                    display: 'flex',
-                    justifyContent: 'start',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  {moves.map((item, index) => {
-                    return (
-                      <div key={index} css={{ marginBottom: '5px' }} > <Tag types={'move'} name={item.move.name} /> </div>
-                    )
-                  })}
-                </div>
-              </div>
+              )}
             </div>
+
+            {!isGatcha ? (
+              <div>
+                <div className="abilities">
+                  <div
+                    css={{
+                      marginBottom: '.7rem',
+                      textAlign: 'left',
+                      fontSize: '1rem',
+                      borderBottom: '1px dashed black'
+                    }}>
+                    ABILITIES
+                  </div>
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'start',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    {abilities.map((item, index) => {
+                      return (
+                        <div key={index} css={{ marginBottom: '5px' }} > <Tag types={'abilities'} name={item.ability.name} /> </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div className="moves" css={{ marginTop: '1rem' }}>
+                  <div
+                    css={{
+                      marginBottom: '.7rem',
+                      textAlign: 'left',
+                      fontSize: '1rem',
+                      borderBottom: '1px dashed black'
+                    }}>
+                    MOVES
+                  </div>
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'start',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    {moves.map((item, index) => {
+                      return (
+                        <div key={index} css={{ marginBottom: '5px' }} > <Tag types={'move'} name={item.move.name} /> </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Gatcha />   
+            )}
           </div>
 
           <div
@@ -218,8 +226,9 @@ const PokemonDetail: FunctionComponent<Props> = ({ pokemon, name }) => {
                   color: 'green'
                 }
               }}
+              onClick={(e) => gatchaPokemon()}
             >
-              GATCHA
+              CATCH
             </div>
           </div>
         </div>
