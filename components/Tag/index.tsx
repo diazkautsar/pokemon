@@ -15,7 +15,7 @@ const Tags: FunctionComponent<Props> = ({ name, types }) => {
         return '#4b7cf3'
       
       case 'type':
-        return 'black'
+        return 'rgb(255, 203, 5)'
       
       case 'abilities':
         return 'red'
@@ -35,12 +35,6 @@ const Tags: FunctionComponent<Props> = ({ name, types }) => {
         alignItems: 'center'
       }}>
         <div css={{ marginRight: '2px' }}>
-          {/* <Image
-            src="/move.png"
-            alt="Move Icon"
-            width={15}
-            height={15}
-          /> */}
         </div>
         <div> { name } </div>
       </div>
