@@ -4,7 +4,6 @@ import HomePage from '../components/HomePage'
 import { GetServerSideProps } from 'next'
 import { initializeApollo } from '../libs/apollo'
 import { GET_POKEMONS } from '../utils/graphql/queries'
-import Loading from '../components/Loading'
 
 
 const gqlVariables = {
@@ -33,12 +32,32 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 function Home({ ...pageProps }) {
   const client = initializeApollo()
-  const [pokemons, setPokemons] = useState(pageProps.pokemons.results)
+  const [pokemons, setPokemons] = useState([])
   const [offset, setOffset] = useState<number>(gqlVariables.limit)
   const [limit] = useState<number>(gqlVariables.limit)
   const [totalPokemon] = useState<number>(pageProps.pokemons.count)
   const [isAllPokemon, setIsAllPokemon] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+
+  React.useEffect(() => {
+    let getPokemons;
+
+    if (JSON.parse(localStorage.getItem('pokemonList'))) {
+      getPokemons = JSON.parse(localStorage.getItem('pokemonList'))
+    } else {
+      getPokemons = pageProps.pokemons.results
+    }
+
+    const updatePokemon = getPokemons.map(item => {
+      return {
+        ...item,
+        owned: item.owned ? item.owned : 0
+      }
+    })
+
+    setPokemons(updatePokemon)
+    localStorage.setItem('pokemonList', JSON.stringify(updatePokemon))
+  }, [])
 
   const loadMorePokemon = (event: MouseEvent) => {
     setLoading(true)
@@ -51,8 +70,17 @@ function Home({ ...pageProps }) {
       }
     })
       .then(({ data }) => {
-        const newPokemons = pokemons.concat(data.pokemons.results)
-        setPokemons(newPokemons)
+        const addOwnedToPokemonList = data.pokemons.results.map(item => {
+          return {
+            ...item,
+            owned: item.owned ? item.owned : 0
+          }
+        })
+
+        const joinWithPreviousList = pokemons.concat(addOwnedToPokemonList)
+
+        localStorage.setItem('pokemonList', JSON.stringify(joinWithPreviousList))
+        setPokemons(joinWithPreviousList)
       })
       .catch(err => {
         console.log(err)
@@ -74,7 +102,14 @@ function Home({ ...pageProps }) {
       }
     })
       .then(({ data }) => {
-        setPokemons(data.pokemons.results)
+        const addOwnedToPokemonList = data.pokemons.results.map(item => {
+          return {
+            ...item,
+            owned: item.owned ? item.owned : 0
+          }
+        })
+        localStorage.setItem('pokemonList', JSON.stringify(addOwnedToPokemonList))
+        setPokemons(addOwnedToPokemonList)
       })
       .catch(err => {
         console.log(err)
@@ -92,8 +127,8 @@ function Home({ ...pageProps }) {
         loadMorePokemon={loadMorePokemon}
         seeAllPokemon={seeAllPokemon}
         isAllPokemon={isAllPokemon}
+        loading={loading}
       />
-      { loading && <Loading /> }
     </React.Fragment>
   )
 }
