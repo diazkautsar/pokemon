@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { FunctionComponent, useState } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import Image from 'next/image'
+
 import { initializeApollo } from '../../libs/apollo'
 import { GET_DETAIL_POKEMONS } from '../../utils/graphql/queries'
 import { usePokemonContext } from '../../context/index'
@@ -108,7 +110,8 @@ const PokemonDetail: FunctionComponent<Props> = ({ pokemon, name }) => {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        marginTop: '5rem'
       }}>
         <div
           css={{
@@ -201,36 +204,47 @@ const PokemonDetail: FunctionComponent<Props> = ({ pokemon, name }) => {
                 </div>
               </div>
             ) : (
-              <Gatcha />   
+              <Gatcha
+                imageUrl={imageDetailUrl ? imageDetailUrl : srcImage}
+                name={name}  
+              />
             )}
           </div>
 
-          <div
-            css={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignContent: 'center',
-              borderTop: '1px dashed black',
-              marginTop: '10px'
-            }}
-          >
+          {!isGatcha && (
             <div
               css={{
-                marginTop: '1rem',
-                border: '1px solid',
-                padding: '15px',
-                borderRadius: '10px',
-                cursor: 'pointer',
-                ":hover": {
-                  color: 'green'
-                }
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
+                borderTop: '1px dashed black',
+                marginTop: '10px'
               }}
-              onClick={(e) => gatchaPokemon()}
             >
-              CATCH
+              <div
+                css={{
+                  marginTop: '1rem',
+                  padding: '15px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  ":hover": {
+                    backgroundColor: 'rgb(255, 203, 5)'
+                  }
+                }}
+                onClick={(e) => gatchaPokemon()}
+              >
+                <Image
+                  src="/pokeball.png"
+                  alt="pokeball"
+                  width={75}
+                  height={75}
+                />
+                <div> CATCH </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </React.Fragment>
