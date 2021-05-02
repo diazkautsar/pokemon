@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import React, { } from 'react'
-import Head from 'next/head'
 import Navbar from '../Navbar'
 
 type Props = {
@@ -10,10 +9,6 @@ type Props = {
 const Layout: React.FunctionComponent<Props> = ({ Component, ...props }) => {
   return (
     <>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Navbar/>
       <Component {...props} />
     </>
