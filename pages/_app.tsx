@@ -32,6 +32,8 @@ function App({ Component, pageProps }: AppProps) {
       </Head>
       <PokemonProvider>
         <ToastProvider
+          autoDismiss
+          autoDismissTimeout={4000}
           placement="top-center"
         >
           <Layout Component={Component} {...pageProps} />
