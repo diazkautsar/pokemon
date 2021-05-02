@@ -2,6 +2,7 @@
 import { FunctionComponent, MouseEvent } from 'react'
 import PokemonCard from '../PokemonCard'
 import styled from '@emotion/styled'
+import Image from 'next/image'
 
 type pokemonTypes = {
   __typename?: string,
@@ -18,6 +19,7 @@ type resultsTypes = {
   url?: string,
   name?: string,
   image?: string,
+  owned?: number,
 }
 
 interface Props {
@@ -25,6 +27,7 @@ interface Props {
   loadMorePokemon?: (event: MouseEvent) => void,
   seeAllPokemon?: (event: MouseEvent) => void,
   isAllPokemon?: boolean,
+  loading?: boolean
 }
 
 
@@ -37,7 +40,7 @@ const Button = styled('div')`
 `
 
 
-const HomePage: FunctionComponent<Props> = ({ loadMorePokemon, pokemons, isAllPokemon, seeAllPokemon }) => {
+const HomePage: FunctionComponent<Props> = ({ loadMorePokemon, pokemons, isAllPokemon, seeAllPokemon, loading }) => {
   return (
     <>
       <div css={{
@@ -48,7 +51,7 @@ const HomePage: FunctionComponent<Props> = ({ loadMorePokemon, pokemons, isAllPo
       }}>
         { pokemons.map((item, index) => {
           return (
-            <PokemonCard key={index} name={item.name} image={item.image} />
+            <PokemonCard key={index} name={item.name} image={item.image} owned={item.owned} />
           )
         })}
       </div>
@@ -60,22 +63,36 @@ const HomePage: FunctionComponent<Props> = ({ loadMorePokemon, pokemons, isAllPo
           margin: '10px',
         }}
         >
-          <div
-            onClick={(e) => loadMorePokemon(e)}
-            css={{
-              margin: '5px 10px',
-            }}
-          >
-            <Button> Load More Pokemon </Button>
-          </div>
-          <div
-            css={{
-              margin: '5px 10px'
-            }}
-            onClick={(e) => seeAllPokemon(e)}
-          >
-            <Button> See All Pokemon </Button>
-          </div>
+          { loading ? (
+            <Image
+              src="/pokeball.png"
+              alt="pokeball"
+              width={50}
+              height={50}
+              css={{
+                animation: 'rotation 10s infinite linear',
+              }}
+            />
+          ) : (
+            <>
+              <div
+                onClick={(e) => loadMorePokemon(e)}
+                css={{
+                  margin: '5px 10px',
+                }}
+              >
+                <Button> Load More Pokemon </Button>
+              </div>
+              <div
+                css={{
+                  margin: '5px 10px'
+                }}
+                onClick={(e) => seeAllPokemon(e)}
+              >
+                <Button> See All Pokemon </Button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </>
