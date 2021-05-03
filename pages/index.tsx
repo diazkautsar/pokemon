@@ -35,7 +35,7 @@ function Home({ ...pageProps }) {
   const [pokemons, setPokemons] = useState([])
   const [offset, setOffset] = useState<number>(gqlVariables.limit)
   const [limit] = useState<number>(gqlVariables.limit)
-  const [totalPokemon] = useState<number>(pageProps.pokemons.count)
+  const [totalPokemon] = useState<number>(pageProps?.pokemons?.count || 0)
   const [isAllPokemon, setIsAllPokemon] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -45,7 +45,7 @@ function Home({ ...pageProps }) {
     if (JSON.parse(localStorage.getItem('pokemonList'))) {
       getPokemons = JSON.parse(localStorage.getItem('pokemonList'))
     } else {
-      getPokemons = pageProps.pokemons.results
+      getPokemons = pageProps?.pokemons?.results || []
     }
 
     const updatePokemon = getPokemons.map(item => {
