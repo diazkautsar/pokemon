@@ -91,7 +91,6 @@ const Gatcha: React.FunctionComponent<Props> = ({ imageUrl, name }) => {
       addToast('Success add pokemon to my pokemon list', {
         appearance: 'success'
       })
-      setStatus(null)
       setAfterSubmit(true)
     } else {
       const findPokemon = existingList.find(item => item.name === name && item.nickname.toLowerCase() === nickname.toLowerCase())
@@ -114,7 +113,6 @@ const Gatcha: React.FunctionComponent<Props> = ({ imageUrl, name }) => {
         addToast('Success add pokemon to my pokemon list', {
           appearance: 'success'
         })
-        setStatus(null)
         setAfterSubmit(true)
       }
 
