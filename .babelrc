@@ -1,3 +1,27 @@
 {
-  "presets": ["next/babel"]
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-env": {},
+        "transform-runtime": {},
+        "styled-jsx": {},
+        "class-properties": {},
+        "preset-react": {
+          "runtime": "automatic",
+          "importSource": "@emotion/react"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "@emotion",
+      {
+        "sourceMap": false,
+        "labelFormat": "-ww131231",
+        "cssPropOptimization": false
+      }
+    ]
+  ]
 }
