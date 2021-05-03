@@ -94,7 +94,7 @@ const Gatcha: React.FunctionComponent<Props> = ({ imageUrl, name }) => {
 
       setAfterSubmit(true)
     } else {
-      const findPokemon = existingList.find(item => item.name === name && item.nickname === nickname)
+      const findPokemon = existingList.find(item => item.name === name && item.nickname.toLowerCase() === nickname.toLowerCase())
 
       if (findPokemon) {
         addToast('Name already exists for this pokemon', {
