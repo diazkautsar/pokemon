@@ -26,7 +26,7 @@ const Tags: FunctionComponent<Props> = ({ name, types }) => {
   }
 
   return (
-    <div className="tag" css={{ background: 'none', borderColor: getColor(), color: getColor() }}>
+    <div data-testid="tag" className="tag" css={{ background: 'none', borderColor: getColor(), color: getColor() }}>
       <div css={{
         display: 'flex',
         flexWrap: 'nowrap',
