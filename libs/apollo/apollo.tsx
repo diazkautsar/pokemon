@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch'
 import merge from 'deepmerge'
 import type { GetServerSidePropsContext } from 'next'
 import type { NormalizedCacheObject } from '@apollo/client'
@@ -13,6 +14,7 @@ const createApolloClient = (ctx?: GetServerSidePropsContext) => {
   const httpLink = new HttpLink({
     uri: 'https://graphql-pokeapi.vercel.app/api/graphql',
     credentials: 'same-origin',
+    fetch
   });
 
   return new ApolloClient({
